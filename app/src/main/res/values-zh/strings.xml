@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="privacy_dialog_title">隐私政策</string>
+    <string name="privacy_dialog_message">Nibras Scan（开发者：Nibras Code）仅在您的设备上处理扫描内容。我们不收集个人信息，无广告和分析。相机仅用于拍摄文档。请阅读并同意隐私政策后继续使用。</string>
+    <string name="privacy_dialog_read">阅读隐私政策</string>
+    <string name="privacy_dialog_agree">同意</string>
+    <string name="privacy_dialog_disagree">不同意</string>
+</resources>

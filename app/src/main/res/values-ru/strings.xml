@@ -97,4 +97,9 @@
     <string name="import_failed">Не удалось прочитать изображение</string>
     <string name="open_pdf_failed">Нет приложения для открытия PDF</string>
     <string name="permission_settings">Разрешите камеру в настройках</string>
+    <string name="privacy_dialog_title">Privacy policy</string>
+    <string name="privacy_dialog_message">Nibras Scan (developer: Nibras Code) processes your scans only on your device. We do not collect personal data, and there are no ads or analytics. Please read and agree to the privacy policy to continue.</string>
+    <string name="privacy_dialog_read">Read policy</string>
+    <string name="privacy_dialog_agree">Agree</string>
+    <string name="privacy_dialog_disagree">Disagree</string>
 </resources>

@@ -97,4 +97,9 @@
     <string name="import_failed">Şəkil oxunmadı</string>
     <string name="open_pdf_failed">PDF açan tətbiq tapılmadı</string>
     <string name="permission_settings">Kameraya icazəni ayarlardan açın</string>
+    <string name="privacy_dialog_title">Məxfilik siyasəti</string>
+    <string name="privacy_dialog_message">Nibras Scan (developer: Nibras Code) skanlarınızı yalnız cihazınızda işləyir. Şəxsi məlumat toplamırıq, reklam və analitika yoxdur. Kamera yalnız sənəd çəkmək üçündür. Davam etmək üçün məxfilik siyasətini oxuyub razılaşın.</string>
+    <string name="privacy_dialog_read">Siyasəti oxu</string>
+    <string name="privacy_dialog_agree">Razıyam</string>
+    <string name="privacy_dialog_disagree">İmtina</string>
 </resources>

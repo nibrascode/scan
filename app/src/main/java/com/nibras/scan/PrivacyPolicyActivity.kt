@@ -18,7 +18,11 @@ class PrivacyPolicyActivity : AppCompatActivity() {
 
         binding.btnBackPrivacy.setOnClickListener { finish() }
 
-        val file = if (Locale.getDefault().language == "az") "privacy_policy_az.html" else "privacy_policy_en.html"
+        val file = when (Locale.getDefault().language) {
+            "az" -> "privacy_policy_az.html"
+            "zh" -> "privacy_policy_zh.html"
+            else -> "privacy_policy_en.html"
+        }
         val web: WebView = binding.webPrivacy
         web.settings.javaScriptEnabled = false
         web.loadUrl("file:///android_asset/$file")
