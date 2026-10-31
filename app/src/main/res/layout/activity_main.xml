@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
+    android:id="@+id/rootMain"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/gray_light">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollMain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/headerMain"
@@ -89,6 +101,7 @@
 
         <TextView
             android:id="@+id/btnImport"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginTop="10dp"
@@ -100,15 +113,38 @@
             android:textColor="@color/white"
             android:textSize="15sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="@string/tools_title"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/toolsGrid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical" />
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/etSearch"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+    <EditText
+        android:id="@+id/etSearch"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="48dp"
         android:background="@drawable/bg_card"
         android:hint="@string/search_hint"
         android:importantForAutofill="no"
@@ -119,6 +155,31 @@
         android:textColor="@color/gray_dark"
         android:textColorHint="@color/gray_medium"
         android:textSize="15sp" />
+
+        <ImageButton
+            android:id="@+id/btnSort"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_card"
+            android:contentDescription="@string/sort"
+            android:src="@drawable/ic_sort" />
+    </LinearLayout>
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/folderChips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp" />
+    </HorizontalScrollView>
 
     <LinearLayout
         android:id="@+id/bannerResume"
@@ -177,6 +238,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="18dp"
         android:layout_marginBottom="6dp"
+        android:id="@+id/tvListTitle"
         android:text="@string/recent_documents"
         android:textColor="@color/gray_dark"
         android:textSize="16sp"
@@ -184,13 +246,14 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="wrap_content"
+        android:minHeight="160dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvDocuments"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
             android:clipToPadding="false"
             android:paddingBottom="16dp" />
 
@@ -206,4 +269,6 @@
             android:visibility="gone" />
     </FrameLayout>
 
+    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

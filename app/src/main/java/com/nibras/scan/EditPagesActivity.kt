@@ -29,6 +29,9 @@ class EditPagesActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_FROM_LIBRARY = "extra_from_library"
+        /** Optional: directory and default name to save into (editing an existing PDF / merge). */
+        const val EXTRA_TARGET_DIR = "extra_target_dir"
+        const val EXTRA_TARGET_NAME = "extra_target_name"
     }
 
     private lateinit var binding: ActivityEditPagesBinding
@@ -246,13 +249,15 @@ class EditPagesActivity : AppCompatActivity() {
 
     private fun showSaveDialog() {
         val dialogBinding = DialogSaveDocumentBinding.inflate(layoutInflater)
-        dialogBinding.etDocName.setText(FileUtils.defaultDocumentName())
+        val targetDir = intent.getStringExtra(EXTRA_TARGET_DIR)?.let { File(it) }?.takeIf { it.isDirectory }
+            ?: FileUtils.documentsDir(this)
+        dialogBinding.etDocName.setText(intent.getStringExtra(EXTRA_TARGET_NAME) ?: FileUtils.defaultDocumentName())
         AlertDialog.Builder(this)
             .setView(dialogBinding.root)
             .setPositiveButton(R.string.save) { _, _ ->
                 val name = FileUtils.sanitizeDocumentName(dialogBinding.etDocName.text.toString())
                     .ifEmpty { FileUtils.defaultDocumentName() }
-                val outputFile = File(FileUtils.documentsDir(this), "$name.pdf")
+                val outputFile = File(targetDir, "$name.pdf")
                 if (outputFile.exists()) {
                     AlertDialog.Builder(this)
                         .setMessage(R.string.overwrite_confirm)
@@ -269,12 +274,14 @@ class EditPagesActivity : AppCompatActivity() {
 
     private fun createPdf(outputFile: File) {
         val pagesSnapshot = pages.toList()
-        val maxDim = SettingsManager.getPdfQuality(this).maxDimensionPx
+        val quality = SettingsManager.getPdfQuality(this)
+        val maxDim = quality.maxDimensionPx
 
         lifecycleScope.launch {
             val success = withContext(Dispatchers.IO) {
                 try {
-                    PdfUtils.createPdf(pagesSnapshot.size, outputFile) { i ->
+                    PdfUtils.deleteSidecars(outputFile)
+                    PdfUtils.createPdf(pagesSnapshot.size, outputFile, quality.jpegQuality) { i ->
                         val page = pagesSnapshot[i]
                         val src = FileUtils.decodeSampled(page.originalFile.absolutePath, maxDim)
                             ?: android.graphics.Bitmap.createBitmap(32, 32, android.graphics.Bitmap.Config.ARGB_8888)
@@ -289,6 +296,7 @@ class EditPagesActivity : AppCompatActivity() {
             }
 
             if (success) {
+                com.nibras.scan.util.OcrIndexer.indexAsync(this@EditPagesActivity, outputFile)
                 ScanSession.clear()
                 FileUtils.clearPagesDir(this@EditPagesActivity)
                 Toast.makeText(this@EditPagesActivity, R.string.document_saved, Toast.LENGTH_SHORT).show()

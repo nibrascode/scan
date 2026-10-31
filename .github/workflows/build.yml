@@ -49,9 +49,16 @@ jobs:
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > $RUNNER_TEMP/release.jks
           export KEYSTORE_PATH=$RUNNER_TEMP/release.jks
           ./gradlew bundleRelease
+          ./gradlew assembleRelease -ParmOnly
 
       - uses: actions/upload-artifact@v4
         if: env.HAS_KEYSTORE == 'true'
         with:
           name: NibrasScan-release-aab
           path: app/build/outputs/bundle/release/*.aab
+
+      - uses: actions/upload-artifact@v4
+        if: env.HAS_KEYSTORE == 'true'
+        with:
+          name: NibrasScan-release-apk
+          path: app/build/outputs/apk/release/*.apk

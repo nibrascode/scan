@@ -34,7 +34,8 @@ class DocumentAdapter(
         holder.binding.tvDocName.text = doc.name
         holder.binding.tvDocMeta.text =
             context.getString(R.string.page_count_format, doc.pageCount) +
-                " · " + dateFormat.format(doc.createdAt)
+                " · " + dateFormat.format(doc.createdAt) +
+                (doc.folder?.let { " · 📁 $it" } ?: "")
         val thumb = doc.thumb
         if (thumb != null && !thumb.isRecycled) {
             holder.binding.imgThumb.setImageBitmap(thumb)

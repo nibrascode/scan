@@ -24,10 +24,13 @@ class OcrActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_IMAGE_PATH = "extra_image_path"
+        /** Whole-PDF mode: recognises every page and stores the searchable text. */
+        const val EXTRA_PDF_PATH = "extra_pdf_path"
     }
 
     private lateinit var binding: ActivityOcrBinding
     private var imagePath: String? = null
+    private var pdfPath: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +39,12 @@ class OcrActivity : AppCompatActivity() {
         InsetsUtil.apply(binding.root, binding.headerOcr)
 
         imagePath = intent.getStringExtra(EXTRA_IMAGE_PATH)
+        pdfPath = intent.getStringExtra(EXTRA_PDF_PATH)
+        binding.btnShareText.setOnClickListener { shareResult() }
+        if (pdfPath != null) {
+            setupPdfMode(pdfPath!!)
+            return
+        }
         if (imagePath == null) {
             finish()
             return
@@ -130,6 +139,38 @@ class OcrActivity : AppCompatActivity() {
             try { tess.recycle() } catch (_: Exception) {}
             bitmap?.let { if (!it.isRecycled) it.recycle() }
         }
+    }
+
+    private fun setupPdfMode(path: String) {
+        val pdf = java.io.File(path)
+        binding.btnCopyText.setOnClickListener { copyResultToClipboard() }
+        fun run(lang: SettingsManager.OcrLanguage, force: Boolean) {
+            binding.chipLangLatin.isSelected = lang == SettingsManager.OcrLanguage.LATIN
+            binding.chipLangArabic.isSelected = lang == SettingsManager.OcrLanguage.ARABIC
+            val cached = com.nibras.scan.util.Library.ocrText(pdf)
+            if (!force && cached.isNotBlank()) { binding.tvOcrResult.text = cached; showLoading(false); return }
+            showLoading(true)
+            binding.tvOcrResult.text = ""
+            lifecycleScope.launch {
+                val text = withContext(Dispatchers.IO) {
+                    SettingsManager.setOcrLanguage(this@OcrActivity, lang)
+                    runCatching { com.nibras.scan.util.OcrIndexer.index(this@OcrActivity, pdf) }.getOrElse { "" }
+                }
+                showLoading(false)
+                binding.tvOcrResult.text = text.ifBlank { getString(R.string.no_text_found) }
+            }
+        }
+        binding.chipLangLatin.setOnClickListener { run(SettingsManager.OcrLanguage.LATIN, true) }
+        binding.chipLangArabic.setOnClickListener { run(SettingsManager.OcrLanguage.ARABIC, true) }
+        run(SettingsManager.getOcrLanguage(this), false)
+    }
+
+    private fun shareResult() {
+        val text = binding.tvOcrResult.text.toString()
+        if (text.isBlank()) return
+        startActivity(android.content.Intent.createChooser(
+            android.content.Intent(android.content.Intent.ACTION_SEND).setType("text/plain")
+                .putExtra(android.content.Intent.EXTRA_TEXT, text), getString(R.string.share)))
     }
 
     private fun copyResultToClipboard() {

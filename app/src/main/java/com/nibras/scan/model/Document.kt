@@ -8,5 +8,7 @@ data class Document(
     val file: File,
     val pageCount: Int,
     val createdAt: Long,
-    val thumb: Bitmap? = null
+    val thumb: Bitmap? = null,
+    val folder: String? = null,
+    val text: String = ""
 )

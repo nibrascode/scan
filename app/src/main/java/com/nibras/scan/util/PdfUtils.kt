@@ -16,7 +16,14 @@ object PdfUtils {
      * [bitmapProvider] and recycled right after drawing. Each PDF page keeps the bitmap's
      * own aspect ratio. The file is only replaced when the whole document is written.
      */
-    fun createPdf(pageCount: Int, outputFile: File, bitmapProvider: (Int) -> Bitmap) {
+    fun createPdf(pageCount: Int, outputFile: File, jpegQuality: Int = 86, bitmapProvider: (Int) -> Bitmap) {
+        // Preferred path: JPEG-compressed pages via PdfBox (much smaller files, quality-controlled).
+        try {
+            PdfTools.writeJpegPdf(pageCount, outputFile, jpegQuality, bitmapProvider)
+            return
+        } catch (_: Throwable) {
+            // fall back to the platform writer below
+        }
         val document = PdfDocument()
         val tmp = File(outputFile.parentFile, outputFile.name + ".tmp")
         try {
@@ -80,11 +87,13 @@ object PdfUtils {
     fun deleteSidecars(file: File) {
         sidecar(file, ".nibrasmeta").delete()
         sidecar(file, ".thumb.jpg").delete()
+        sidecar(file, Library.OCR_SUFFIX).delete()
     }
 
     fun moveSidecars(from: File, to: File) {
         sidecar(from, ".nibrasmeta").let { if (it.exists()) it.renameTo(sidecar(to, ".nibrasmeta")) }
         sidecar(from, ".thumb.jpg").let { if (it.exists()) it.renameTo(sidecar(to, ".thumb.jpg")) }
+        sidecar(from, Library.OCR_SUFFIX).let { if (it.exists()) it.renameTo(sidecar(to, Library.OCR_SUFFIX)) }
     }
 
     private fun sidecar(file: File, suffix: String): File {

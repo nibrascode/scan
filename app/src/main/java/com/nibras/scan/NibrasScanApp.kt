@@ -14,5 +14,6 @@ class NibrasScanApp : Application() {
             false
         }
         ScanSession.restore(this)
+        try { com.tom_roush.pdfbox.android.PDFBoxResourceLoader.init(this) } catch (_: Throwable) {}
     }
 }

@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <!-- Needed the first time ML Kit's on-device text recognition model is fetched. -->
-    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Fully offline app: ML Kit models are bundled. Drop the INTERNET permission that
+         ML Kit's diagnostics library would otherwise merge in. -->
+    <uses-permission android:name="android.permission.INTERNET" tools:node="remove" />
     <uses-feature android:name="android.hardware.camera.any" />
     <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
 
@@ -53,6 +54,9 @@
         <activity android:name=".SettingsActivity" android:exported="false" />
 
         <activity android:name=".PrivacyPolicyActivity" android:exported="false" />
+        <activity android:name=".tools.QrScanActivity" android:exported="false" android:screenOrientation="portrait" />
+        <activity android:name=".tools.QrHistoryActivity" android:exported="false" />
+        <activity android:name=".tools.SignActivity" android:exported="false" android:screenOrientation="portrait" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

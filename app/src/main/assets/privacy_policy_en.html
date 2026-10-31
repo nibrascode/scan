@@ -3,7 +3,7 @@ body{font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6;
 h1{color:#0D1B3E;font-size:1.6em}h2{color:#0D1B3E;font-size:1.15em;margin-top:1.6em}
 a{color:#1478c8}.meta{color:#6b7480;font-size:.9em}hr{border:0;border-top:1px solid #dde2e8;margin:2em 0}
 </style></head><body><h1>Privacy Policy — Nibras Scan</h1>
-<p class="meta">Last updated: October 28, 2026 &middot; Version 1.0.1 &middot; App: Nibras Scan &middot; Developer: Nibras Code &middot; Website: <a href="https://nibrascode.com">nibrascode.com</a> &middot; Contact: <a href="mailto:nibrascode@gmail.com">nibrascode@gmail.com</a></p>
+<p class="meta">Last updated: October 31, 2026 &middot; Version 1.1.0 &middot; App: Nibras Scan &middot; Developer: Nibras Code &middot; Website: <a href="https://nibrascode.com">nibrascode.com</a> &middot; Contact: <a href="mailto:nibrascode@gmail.com">nibrascode@gmail.com</a></p>
 
 <h2>1. Summary</h2>
 <p>Nibras Scan is a document scanner. Everything you scan is processed and stored <b>on your device</b>. We do not run servers for this app, we do not create accounts, we do not show ads and we do not collect, sell or share your personal data.</p>
@@ -12,19 +12,16 @@ a{color:#1478c8}.meta{color:#6b7480;font-size:.9em}hr{border:0;border-top:1px so
 <p>The developer does not collect or receive your name, e-mail, location, contacts, device identifiers, analytics data, or the content of your scans. The app contains no advertising or analytics SDKs.</p>
 
 <h2>3. Data stored on your device</h2>
-<p>The app stores the following only in its private storage on your device: photos of pages you scan (temporary), the PDF documents you create, and your app settings (default filter, PDF quality, OCR language). This data never leaves your device unless you choose to share it (see section 6). You can delete it at any time via <i>Settings &rarr; Delete all data</i> or by uninstalling the app.</p>
+<p>The app stores the following only in its private storage on your device: photos of pages you scan (temporary), the PDF documents and folders you create, text recognised on the device so you can search inside documents (OCR index), the image of the signature you draw (so you can reuse it), your QR/barcode scan history, and your app settings (filter, PDF quality, OCR language, sort order). Passwords you put on PDFs are never stored. This data never leaves your device unless you choose to share it. You can delete it at any time via Settings → Delete all data, clear the QR history via History → Clear, or uninstall the app.</p>
+
 
 <h2>4. Permissions</h2>
-<ul>
-<li><b>Camera</b> &mdash; used only to photograph the documents you want to scan. Images are not uploaded anywhere.</li>
-<li><b>Internet</b> &mdash; the app itself does not send your data over the internet. This permission is declared because Google&rsquo;s ML Kit text-recognition component may download its on-device recognition model through Google Play services the first time it is used.</li>
-</ul>
+<p>The camera is used only to photograph the documents you want to scan and to read QR codes/barcodes. Images are not uploaded anywhere. The app does not request the internet permission and does not send your data over the internet; the text-recognition and barcode models are bundled inside the app. Files are read only from the images and PDFs you pick through Android's picker; no broad storage permission is requested.</p>
+
 
 <h2>5. Third-party components</h2>
-<ul>
-<li><b>Google ML Kit (text recognition)</b> &mdash; recognises text on your device. Text recognition runs on-device; your images are not sent to Google for recognition. Google may process technical information (for example model download and diagnostics) as described in the <a href="https://developers.google.com/ml-kit/android-data-disclosure">ML Kit data disclosure</a> and <a href="https://policies.google.com/privacy">Google Privacy Policy</a>.</li>
-<li><b>Tesseract OCR</b> (open source) &mdash; used for Arabic text recognition, runs fully offline on your device.</li>
-</ul>
+<p>Google ML Kit recognises text (OCR) and QR codes/barcodes on your device; the models ship with the app and your images are not sent to Google. Google ML Kit may process limited technical diagnostics as described in the ML Kit data disclosure and Google Privacy Policy. Tesseract OCR (open source) recognises Arabic text, OpenCV detects document edges, and PdfBox-Android creates and password-protects PDFs — all fully offline on your device.</p>
+
 
 <h2>6. Sharing</h2>
 <p>A document leaves the app only when you explicitly share or open it using Android&rsquo;s share sheet or another app. What that other app does with the file is governed by that app&rsquo;s own privacy policy.</p>
